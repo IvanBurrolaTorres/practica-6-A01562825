@@ -4,7 +4,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import mx.tec.avisos.data.SesionRepository
 import mx.tec.avisos.domain.CredencialesValidator
+import retrofit2.HttpException
+import java.io.IOException
 
 /**
  * Lo que el usuario lleva tecleado en el login. La contraseña vive aquí solo
@@ -22,7 +27,7 @@ data class LoginUiState(
         CredencialesValidator.sonValidas(usuario, password) && !enviando
 }
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(private val repository: SesionRepository) : ViewModel() {
 
     var uiState by mutableStateOf(LoginUiState())
         private set
@@ -44,6 +49,21 @@ class LoginViewModel : ViewModel() {
     }
 
     fun enviar() {
-        // Todavía no hay a quién mandarle las credenciales. Eso es el Bloque A.
+        if (!uiState.puedeEnviar) return
+        viewModelScope.launch {
+            uiState = uiState.copy(enviando = true, error = null)
+            try {
+                if (uiState.modoRegistro) {
+                    repository.registrar(uiState.usuario, uiState.password, uiState.codigoProfesor)
+                } else {
+                    repository.entrar(uiState.usuario, uiState.password)
+                }
+                uiState = LoginUiState()
+            } catch (e: IOException) {
+                uiState = uiState.copy(enviando = false, error = "No hay conexión. Revisa tu internet.")
+            } catch (e: HttpException) {
+                uiState = uiState.copy(enviando = false, error = mensajeDe(e))
+            }
+        }
     }
 }

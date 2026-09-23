@@ -2,6 +2,9 @@ package mx.tec.avisos
 
 import android.app.Application
 import mx.tec.avisos.data.AvisosRepository
+import mx.tec.avisos.data.SesionRepository
+import mx.tec.avisos.data.remote.AuthInterceptor
+import mx.tec.avisos.data.remote.AvisosApi
 import mx.tec.avisos.data.remote.Network
 
 /**
@@ -10,8 +13,12 @@ import mx.tec.avisos.data.remote.Network
  * va a aparecer el de la sesión, y la API va a necesitar el token que él guarda.
  */
 class AppContainer {
+    private val api: AvisosApi by lazy {
+        Network.crearApi(interceptor = AuthInterceptor { sesionRepository.tokenActual() })
+    }
 
-    val avisosRepository: AvisosRepository by lazy { AvisosRepository(Network.crearApi()) }
+    val sesionRepository: SesionRepository by lazy { SesionRepository(api) }
+    val avisosRepository: AvisosRepository by lazy { AvisosRepository(api) }
 }
 
 /** Vive tanto como el proceso. Declarada en el manifiesto con `android:name`. */
