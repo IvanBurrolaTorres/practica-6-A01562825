@@ -1,19 +1,20 @@
 package mx.tec.avisos.data
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
+import mx.tec.avisos.data.local.SesionStore
 import mx.tec.avisos.data.remote.AvisosApi
 import mx.tec.avisos.data.remote.Credenciales
 import mx.tec.avisos.data.remote.toSesion
 import mx.tec.avisos.domain.Sesion
 
-/** Única puerta a la sesión; en el bloque A vive en memoria. */
-class SesionRepository(private val api: AvisosApi) {
-    private val _sesion = MutableStateFlow<Sesion?>(null)
-    val sesion: Flow<Sesion?> = _sesion
+/** Única puerta a la sesión persistida. */
+class SesionRepository(private val api: AvisosApi, private val store: SesionStore) {
+    val sesion: Flow<Sesion?> = store.sesion
 
     suspend fun entrar(usuario: String, password: String) {
-        _sesion.value = api.login(Credenciales(usuario.trim().lowercase(), password)).toSesion()
+        store.guardar(api.login(Credenciales(usuario.trim().lowercase(), password)).toSesion())
     }
 
     suspend fun registrar(usuario: String, password: String, codigoProfesor: String) {
@@ -22,12 +23,12 @@ class SesionRepository(private val api: AvisosApi) {
             password = password,
             codigoProfesor = codigoProfesor.trim().ifEmpty { null }
         )
-        _sesion.value = api.register(credenciales).toSesion()
+        store.guardar(api.register(credenciales).toSesion())
     }
 
     suspend fun salir() {
-        _sesion.value = null
+        store.borrar()
     }
 
-    fun tokenActual(): String? = _sesion.value?.accessToken
+    fun tokenActual(): String? = runBlocking { store.sesion.first() }?.accessToken
 }
