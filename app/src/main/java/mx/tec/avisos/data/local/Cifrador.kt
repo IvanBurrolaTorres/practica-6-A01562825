@@ -60,6 +60,7 @@ class Cifrador(private val alias: String = "sesion") {
      */
     fun descifrar(base64: String): String? = try {
         val bytes = Base64.decode(base64, Base64.NO_WRAP)
+        require(bytes.size >= IV_BYTES + TAG_BITS / 8)
         val iv = bytes.copyOfRange(0, IV_BYTES)
         val cifrado = bytes.copyOfRange(IV_BYTES, bytes.size)
         val cipher = Cipher.getInstance(TRANSFORMACION)

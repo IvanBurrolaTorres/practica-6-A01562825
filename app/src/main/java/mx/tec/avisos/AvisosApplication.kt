@@ -4,18 +4,19 @@ import android.app.Application
 import android.content.Context
 import mx.tec.avisos.data.AvisosRepository
 import mx.tec.avisos.data.SesionRepository
+import mx.tec.avisos.data.local.Cifrador
 import mx.tec.avisos.data.local.SesionStore
 import mx.tec.avisos.data.remote.AuthInterceptor
 import mx.tec.avisos.data.remote.AvisosApi
 import mx.tec.avisos.data.remote.Network
 
 /**
- * El contenedor de dependencias: quién construye a quién, en un solo lugar.
- * Igual que en la Práctica 5. Hoy solo hay un repositorio; durante la práctica
- * va a aparecer el de la sesión, y la API va a necesitar el token que él guarda.
+ * El contenedor construye la API y los repositorios en un solo lugar. La API
+ * pide el token mediante una lambda, así que el ciclo con SesionRepository se
+ * resuelve cuando sale la primera petición.
  */
 class AppContainer(context: Context) {
-    private val sesionStore = SesionStore(context)
+    private val sesionStore = SesionStore(context, Cifrador())
     private val api: AvisosApi by lazy {
         Network.crearApi(interceptor = AuthInterceptor { sesionRepository.tokenActual() })
     }
