@@ -39,6 +39,14 @@ cifrados en el teléfono, y el código se da en clase.
 Todo commit con código generado por IA debe declararlo con un trailer
 `Co-Authored-By`. Ver la política completa en la guía.
 
+## Evidencias
+
+- [Video: sesión y renovación](https://github.com/IvanBurrolaTorres/practica-6-A01562825/raw/refs/heads/main/entregables/Laboratorio_6_Avisos_Sesion_y_Refresh.mp4)
+- [Video: permisos y revocación](https://github.com/IvanBurrolaTorres/practica-6-A01562825/raw/refs/heads/main/entregables/Laboratorio_6_Avisos_Permisos_y_Revocacion.mp4)
+- [Bitácora](docs/bitacora.md) y [resultados de verificación](docs/verificacion.md)
+
+Los dos videos también están en `entregables/` y en el Escritorio.
+
 ## Entrega
 
 Ver la rúbrica en la guía.
