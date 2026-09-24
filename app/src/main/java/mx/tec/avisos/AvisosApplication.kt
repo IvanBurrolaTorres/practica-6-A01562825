@@ -10,11 +10,7 @@ import mx.tec.avisos.data.remote.AuthInterceptor
 import mx.tec.avisos.data.remote.AvisosApi
 import mx.tec.avisos.data.remote.Network
 
-/**
- * El contenedor construye la API y los repositorios en un solo lugar. La API
- * pide el token mediante una lambda, así que el ciclo con SesionRepository se
- * resuelve cuando sale la primera petición.
- */
+
 class AppContainer(context: Context) {
     private val sesionStore = SesionStore(context, Cifrador())
     private val api: AvisosApi by lazy {

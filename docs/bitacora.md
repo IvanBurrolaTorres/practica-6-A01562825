@@ -21,3 +21,16 @@
 | Pantalla, captura o portapapeles | La interfaz no muestra ni copia tokens; solo presenta el usuario y el rol. |
 
 Estas respuestas son conceptuales. La inspección del archivo y del Logcat requiere una sesión real en un emulador o dispositivo.
+
+## Ejercicio C2 · Quién decidió
+
+En la rama `experimento-c2`, la pantalla muestra el botón Publicar para un alumno.
+Al tocarlo, `PublicarScreen` entrega los datos a `PublicarViewModel`, que llama a
+`AvisosRepository`. Este usa Retrofit para `POST /avisos`; `AuthInterceptor`
+agrega el token de acceso. El servidor valida la firma y el rol del token,
+rechaza la publicación con 403 y devuelve un mensaje. Retrofit lanza
+`HttpException`; el ViewModel la convierte en texto mediante `mensajeDe(e)` y
+la pantalla muestra el error sin cerrarse.
+
+Cambiar el rol guardado en DataStore solo alteraría los controles visibles. El
+servidor seguiría leyendo el rol del token firmado y respondería 403.

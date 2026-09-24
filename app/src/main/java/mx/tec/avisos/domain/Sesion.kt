@@ -27,5 +27,8 @@ data class Sesion(
     val refreshToken: String,
     val expiraEn: Long
 ) {
+    /** El cliente usa el rol para mostrar controles; el servidor valida cada petición. */
+    val puedePublicar: Boolean get() = rol == Rol.PROFESOR
+
     fun segundosRestantes(ahora: Long = System.currentTimeMillis() / 1000): Long = expiraEn - ahora
 }
