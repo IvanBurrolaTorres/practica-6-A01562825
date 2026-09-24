@@ -9,12 +9,19 @@ import mx.tec.avisos.data.local.SesionStore
 import mx.tec.avisos.data.remote.AuthInterceptor
 import mx.tec.avisos.data.remote.AvisosApi
 import mx.tec.avisos.data.remote.Network
+import mx.tec.avisos.data.remote.TokenAuthenticator
 
 
 class AppContainer(context: Context) {
     private val sesionStore = SesionStore(context, Cifrador())
     private val api: AvisosApi by lazy {
-        Network.crearApi(interceptor = AuthInterceptor { sesionRepository.tokenActual() })
+        Network.crearApi(
+            interceptor = AuthInterceptor { sesionRepository.tokenActual() },
+            authenticator = TokenAuthenticator(
+                tokenActual = { sesionRepository.tokenActual() },
+                refrescar = { sesionRepository.refrescarToken() }
+            )
+        )
     }
 
     val sesionRepository: SesionRepository by lazy { SesionRepository(api, sesionStore) }
