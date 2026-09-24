@@ -27,5 +27,8 @@ data class Sesion(
     val refreshToken: String,
     val expiraEn: Long
 ) {
+    // Experimento C2: el cliente muestra Publicar a todos; el servidor aún exige profesor.
+    val puedePublicar: Boolean get() = true
+
     fun segundosRestantes(ahora: Long = System.currentTimeMillis() / 1000): Long = expiraEn - ahora
 }
