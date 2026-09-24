@@ -30,7 +30,17 @@ class SesionRepository(private val api: AvisosApi, private val store: SesionStor
     }
 
     suspend fun salir() {
+        val actual = store.sesion.first()
         store.borrar()
+        if (actual != null) {
+            try {
+                api.logout(RefreshBody(actual.refreshToken))
+            } catch (e: IOException) {
+                // La sesión local ya está cerrada; la revocación remota se intentó.
+            } catch (e: HttpException) {
+                // El refresh podía estar revocado previamente.
+            }
+        }
     }
 
     fun tokenActual(): String? = runBlocking { store.sesion.first() }?.accessToken

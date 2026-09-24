@@ -1,11 +1,11 @@
 # Práctica 6 — Avisos
 
-Proyecto de la Práctica 6 de TC2007B, completado hasta el checkpoint del Bloque B.
+Proyecto de la Práctica 6 de TC2007B, completado hasta el checkpoint final.
 
-Es un tablón de avisos con login contra la API del curso. El login ya crea una
-sesión persistente en DataStore. Los tokens se cifran con Android Keystore y
-la capa de red agrega el token de acceso a cada petición. La autorización y
-la renovación automática del token corresponden a los Bloques C y D.
+Es un tablón de avisos con login contra la API del curso. El login crea una
+sesión persistente en DataStore. Los tokens se cifran con Android Keystore;
+la capa de red agrega el token de acceso y lo renueva cuando vence. El servidor
+valida los permisos de publicación y el cierre de sesión revoca el refresh.
 
 ## Cómo empezar
 
@@ -13,7 +13,7 @@ la renovación automática del token corresponden a los Bloques C y D.
 2. Espera a que Gradle sincronice y corre la app: debes ver la pantalla de login.
 3. Abre https://startdroid.com/consola.html y regístrate desde el navegador.
    Es la Parte 0 de la guía, y va antes de escribir código.
-4. Continúa con los Bloques C y D de la guía: https://startdroid.com/practicas/avisos.html
+4. Consulta la guía: https://startdroid.com/practicas/avisos.html
 
 ## Cómo trabajar
 
