@@ -41,6 +41,7 @@ Todo commit con código generado por IA debe declararlo con un trailer
 
 ## Evidencias
 
+- [Reproducir los videos en el navegador](https://ivanburrolatorres.github.io/practica-6-A01562825/docs/)
 - [Video: sesión y renovación](https://github.com/IvanBurrolaTorres/practica-6-A01562825/raw/refs/heads/main/entregables/Laboratorio_6_Avisos_Sesion_y_Refresh.mp4)
 - [Video: permisos y revocación](https://github.com/IvanBurrolaTorres/practica-6-A01562825/raw/refs/heads/main/entregables/Laboratorio_6_Avisos_Permisos_y_Revocacion.mp4)
 - [Bitácora](docs/bitacora.md) y [resultados de verificación](docs/verificacion.md)
