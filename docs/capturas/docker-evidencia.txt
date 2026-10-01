@@ -1,0 +1,36 @@
+$ cd ~/reto-auth-fastapi-docker
+$ docker compose ps
+SERVICE   STATUS                 PORTS
+api       Up 31 minutes          127.0.0.1:8000->8000/tcp
+db        Up 5 hours (healthy)   5432/tcp
+
+$ docker compose logs api --tail 6
+api-1  | INFO:     172.19.0.1:62312 - "GET /health HTTP/1.1" 404 Not Found
+api-1  | INFO:     172.19.0.1:57476 - "GET /health HTTP/1.1" 404 Not Found
+api-1  | INFO:     172.19.0.1:55084 - "POST /api/auth/login HTTP/1.1" 200 OK
+api-1  | INFO:     172.19.0.1:55084 - "GET /api/avisos HTTP/1.1" 200 OK
+api-1  | INFO:     172.19.0.1:60882 - "GET /health HTTP/1.1" 404 Not Found
+api-1  | INFO:     172.19.0.1:61196 - "GET /health HTTP/1.1" 404 Not Found
+
+$ curl -s http://127.0.0.1:8000/api/health   # lo que la app esta llamando
+{
+    "ok": true,
+    "api": "Avisos \u00b7 auth de referencia (FastAPI + PostgreSQL)",
+    "identidad": "usuario y contrase\u00f1a en /auth/login; despu\u00e9s `Authorization: Bearer <accessToken>`",
+    "accessTokenSegundos": 300,
+    "refreshTokenSegundos": 604800,
+    "endpoints": [
+        "POST   /api/auth/register   { usuario, password, codigoProfesor? }",
+
+$ docker compose exec db psql -U postgres avisos -c 'SELECT usuario, rol FROM usuarios ORDER BY created_at'
+          usuario          |   rol    
+---------------------------+----------
+ smoke.1790800214          | alumno
+ smoke.1790800214.tramposo | alumno
+ smoke.1790800214.prof     | profesor
+ falsoadmin                | alumno
+ a01562825                 | alumno
+ a01562825-prof            | profesor
+ sse.1790815186            | profesor
+(7 rows)
+

@@ -48,6 +48,22 @@ Todo commit con código generado por IA debe declararlo con un trailer
 
 Los dos videos también están en `entregables/` y en el Escritorio.
 
+### La misma app contra el servidor propio
+
+Estas dos capturas son del anexo de identidad con Docker (FastAPI + PostgreSQL), no de la API del curso. La misma app, sin cambiar una línea de Kotlin más que `BASE_URL`, servida por el contenedor `api` sobre un PostgreSQL en el contenedor `db`.
+
+| | |
+| --- | --- |
+| ![La app dentro, contra el servidor local](docs/capturas/app-contra-servidor-local.png) | ![Docker sosteniendo el servidor](docs/capturas/docker-sostiene-el-servidor.png) |
+| El tablón cargado y el banner con el usuario. | `docker compose ps`, los logs viendo las peticiones de la app, y la tabla `usuarios`. |
+
+La prueba de que las dos fotos son el mismo sistema está en una línea de los logs del servidor:
+
+    api-1 | INFO: 172.19.0.1:55084 - "POST /api/auth/login HTTP/1.1" 200 OK
+    api-1 | INFO: 172.19.0.1:55084 - "GET  /api/avisos   HTTP/1.1" 200 OK
+
+Esas dos peticiones son las únicas que hizo la app. La segunda solo funcionó porque hay un PostgreSQL dentro del contenedor `db`. El texto de la consola está en [`docs/capturas/docker-evidencia.txt`](docs/capturas/docker-evidencia.txt).
+
 ## Entrega
 
 Ver la rúbrica en la guía.
